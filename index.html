@@ -1,0 +1,345 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --ink:#1a1a2e;--ink2:#3d3d5c;--ink3:#7a7a9d;
+    --bg:#f5f4f0;--surface:#ffffff;--surface2:#f0eff9;
+    --accent:#4f46e5;--accent2:#7c3aed;--gold:#d97706;
+    --green:#059669;--rose:#e11d48;--sky:#0284c7;
+    --border:rgba(79,70,229,0.12);--radius:14px;
+  }
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh}
+
+  /* HEADER */
+  .site-header{
+    background:var(--ink);
+    padding:0 2rem;
+    display:flex;align-items:center;justify-content:space-between;
+    position:sticky;top:0;z-index:100;
+    border-bottom:2px solid var(--accent);
+  }
+  .logo-block{display:flex;align-items:center;gap:12px;padding:14px 0}
+  .logo-badge{
+    width:42px;height:42px;border-radius:10px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;align-items:center;justify-content:center;
+    font-family:'DM Serif Display',serif;font-size:18px;color:#fff;font-weight:400;
+    flex-shrink:0;
+  }
+  .logo-text{line-height:1.2}
+  .logo-text strong{display:block;color:#fff;font-size:15px;font-weight:600;letter-spacing:0.04em}
+  .logo-text span{color:rgba(255,255,255,0.5);font-size:11px;letter-spacing:0.06em;text-transform:uppercase}
+  .nav-links{display:flex;gap:6px;align-items:center}
+  .nav-links a{
+    color:rgba(255,255,255,0.65);font-size:13px;font-weight:500;
+    text-decoration:none;padding:6px 14px;border-radius:8px;
+    transition:all 0.2s;
+  }
+  .nav-links a:hover{color:#fff;background:rgba(255,255,255,0.08)}
+  .nav-links a.active{color:#fff;background:rgba(79,70,229,0.4)}
+  .hamburger{display:none;background:none;border:none;cursor:pointer;padding:6px}
+  .hamburger span{display:block;width:22px;height:2px;background:#fff;margin:4px 0;border-radius:2px;transition:0.3s}
+
+  /* HERO */
+  .hero{
+    background:var(--ink);
+    padding:48px 2rem 56px;
+    text-align:center;
+    position:relative;overflow:hidden;
+  }
+  .hero::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse 60% 80% at 50% 120%,rgba(79,70,229,0.25),transparent);
+    pointer-events:none;
+  }
+  .hero-tag{
+    display:inline-block;
+    background:rgba(79,70,229,0.15);border:1px solid rgba(79,70,229,0.3);
+    color:rgba(255,255,255,0.7);font-size:11px;letter-spacing:0.1em;text-transform:uppercase;
+    padding:4px 14px;border-radius:100px;margin-bottom:16px;
+  }
+  .hero h1{
+    font-family:'DM Serif Display',serif;
+    font-size:clamp(2rem,5vw,3.2rem);
+    color:#fff;line-height:1.1;margin-bottom:12px;font-weight:400;
+  }
+  .hero h1 em{color:rgba(167,139,250,0.9);font-style:italic}
+  .hero p{color:rgba(255,255,255,0.55);font-size:15px;max-width:480px;margin:0 auto;line-height:1.7}
+
+  /* TOOLBAR */
+  .toolbar{
+    max-width:960px;margin:0 auto;padding:28px 1.5rem 0;
+    display:flex;gap:12px;flex-wrap:wrap;align-items:center;
+  }
+  .search-wrap{
+    flex:1;min-width:200px;position:relative;
+  }
+  .search-wrap i{
+    position:absolute;left:13px;top:50%;transform:translateY(-50%);
+    color:var(--ink3);font-size:16px;pointer-events:none;
+  }
+  .search-input{
+    width:100%;padding:10px 14px 10px 40px;
+    border:1.5px solid var(--border);border-radius:10px;
+    background:var(--surface);color:var(--ink);font-size:14px;font-family:inherit;
+    transition:border-color 0.2s;outline:none;
+  }
+  .search-input:focus{border-color:var(--accent)}
+  .search-input::placeholder{color:var(--ink3)}
+  .filter-pills{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{
+    border:1.5px solid var(--border);background:var(--surface);
+    color:var(--ink2);font-size:12px;font-weight:500;
+    padding:7px 16px;border-radius:100px;cursor:pointer;
+    transition:all 0.18s;font-family:inherit;
+  }
+  .pill:hover{border-color:var(--accent);color:var(--accent)}
+  .pill.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  /* COUNT */
+  .results-info{
+    max-width:960px;margin:0 auto;padding:18px 1.5rem 8px;
+    font-size:13px;color:var(--ink3);
+  }
+  .results-info strong{color:var(--ink);font-weight:600}
+
+  /* GRID */
+  .events-grid{
+    max-width:960px;margin:0 auto;
+    padding:0 1.5rem 3rem;
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:20px;
+  }
+
+  /* CARD */
+  .event-card{
+    background:var(--surface);border-radius:var(--radius);
+    border:1.5px solid var(--border);
+    display:flex;flex-direction:column;
+    overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;
+    animation:cardIn 0.4s ease both;
+  }
+  @keyframes cardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .event-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(79,70,229,0.1)}
+  .card-top{
+    padding:20px 20px 0;
+    display:flex;align-items:flex-start;justify-content:space-between;gap:8px;
+  }
+  .cat-badge{
+    font-size:10px;font-weight:600;letter-spacing:0.07em;text-transform:uppercase;
+    padding:4px 10px;border-radius:100px;
+  }
+  .cat-workshop{background:#ede9fe;color:#5b21b6}
+  .cat-hackathon{background:#fef3c7;color:#92400e}
+  .cat-talk{background:#d1fae5;color:#065f46}
+  .cat-competition{background:#fee2e2;color:#991b1b}
+  .cat-seminar{background:#e0f2fe;color:#075985}
+  .cat-bootcamp{background:#fce7f3;color:#9d174d}
+  .spots-left{font-size:11px;color:var(--ink3);white-space:nowrap}
+  .card-body{padding:16px 20px;flex:1}
+  .event-title{
+    font-family:'DM Serif Display',serif;
+    font-size:19px;line-height:1.25;color:var(--ink);margin-bottom:8px;font-weight:400;
+  }
+  .event-meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .meta-item{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--ink3)}
+  .meta-item i{font-size:14px}
+  .event-desc{font-size:13px;color:var(--ink2);line-height:1.65}
+  .card-footer{
+    padding:14px 20px;
+    border-top:1px solid var(--border);
+    display:flex;align-items:center;justify-content:space-between;gap:8px;
+  }
+  .presenter{display:flex;align-items:center;gap:8px}
+  .avatar{
+    width:28px;height:28px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;font-weight:600;color:#fff;flex-shrink:0;
+  }
+  .presenter-name{font-size:12px;color:var(--ink3)}
+  .presenter-name strong{display:block;color:var(--ink2);font-size:11px;font-weight:600}
+  .btn-register{
+    background:var(--accent);color:#fff;
+    border:none;border-radius:9px;
+    font-size:13px;font-weight:600;font-family:inherit;
+    padding:9px 18px;cursor:pointer;
+    transition:background 0.18s,transform 0.1s;
+    white-space:nowrap;
+  }
+  .btn-register:hover{background:#4338ca}
+  .btn-register:active{transform:scale(0.97)}
+  .btn-register.full{background:var(--ink3);cursor:not-allowed}
+  .btn-register.full:hover{background:var(--ink3)}
+
+  /* EMPTY */
+  .empty-state{
+    grid-column:1/-1;text-align:center;padding:60px 20px;
+    color:var(--ink3);
+  }
+  .empty-state i{font-size:40px;display:block;margin-bottom:12px;opacity:0.5}
+  .empty-state p{font-size:14px}
+
+  /* MOBILE NAV */
+  .mobile-nav{
+    display:none;flex-direction:column;gap:2px;
+    background:var(--ink);padding:8px 1rem;
+    border-bottom:1px solid rgba(255,255,255,0.06);
+  }
+  .mobile-nav.open{display:flex}
+  .mobile-nav a{
+    color:rgba(255,255,255,0.7);text-decoration:none;
+    padding:10px 12px;border-radius:8px;font-size:14px;
+  }
+  .mobile-nav a:hover{background:rgba(255,255,255,0.06);color:#fff}
+
+  @media(max-width:640px){
+    .nav-links{display:none}
+    .hamburger{display:block}
+    .hero{padding:36px 1.25rem 44px}
+    .events-grid{grid-template-columns:1fr;padding:0 1rem 2rem}
+    .toolbar{padding:20px 1rem 0}
+  }
+</style>
+
+<h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">FOCES upcoming technical events listing with search and category filter</h2>
+
+<header class="site-header">
+  <div class="logo-block">
+    <div class="logo-badge">F</div>
+    <div class="logo-text">
+      <strong>FOCES</strong>
+      <span>Forum of Computer & Engineering Students</span>
+    </div>
+  </div>
+  <nav class="nav-links" aria-label="Main navigation">
+    <a href="#" class="active">Events</a>
+    <a href="#">About</a>
+    <a href="#">Projects</a>
+    <a href="#">Members</a>
+    <a href="#">Contact</a>
+  </nav>
+  <button class="hamburger" aria-label="Toggle navigation" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+<nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+  <a href="#">Events</a>
+  <a href="#">About</a>
+  <a href="#">Projects</a>
+  <a href="#">Members</a>
+  <a href="#">Contact</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-tag">Upcoming Events 2025</div>
+  <h1>Level up your<br><em>technical skills</em></h1>
+  <p>Workshops, hackathons, and talks curated by students, for students. All events are free to attend.</p>
+</section>
+
+<div class="toolbar">
+  <div class="search-wrap">
+    <i class="ti ti-search" aria-hidden="true"></i>
+    <input class="search-input" type="search" placeholder="Search events…" id="searchInput" oninput="filterEvents()" aria-label="Search events">
+  </div>
+  <div class="filter-pills" role="group" aria-label="Filter by category">
+    <button class="pill active" onclick="setFilter('All',this)">All</button>
+    <button class="pill" onclick="setFilter('Workshop',this)">Workshop</button>
+    <button class="pill" onclick="setFilter('Hackathon',this)">Hackathon</button>
+    <button class="pill" onclick="setFilter('Talk',this)">Talk</button>
+    <button class="pill" onclick="setFilter('Competition',this)">Competition</button>
+    <button class="pill" onclick="setFilter('Seminar',this)">Seminar</button>
+    <button class="pill" onclick="setFilter('Bootcamp',this)">Bootcamp</button>
+  </div>
+</div>
+
+<div class="results-info" id="resultsInfo"></div>
+<main class="events-grid" id="eventsGrid" aria-label="Events listing"></main>
+
+<script>
+const events = [
+  {id:1,title:"Full-Stack Web Dev Bootcamp",cat:"Bootcamp",date:"Jan 18, 2025",time:"10:00 AM",location:"Lab 3, CS Block",desc:"A three-day intensive covering React, Node.js, and PostgreSQL. Build and deploy a full-stack app from scratch.",presenter:"Arjun Menon",role:"Final Year, CSE",avatarBg:"#4f46e5",spots:12,total:30},
+  {id:2,title:"Hackathon: Climate Tech Challenge",cat:"Hackathon",date:"Jan 25–26, 2025",time:"9:00 AM",location:"Main Auditorium",desc:"48-hour hackathon focused on building tech solutions for climate change. Solo or teams of up to 4. Prizes for top 3.",presenter:"FOCES Committee",role:"Event Organizer",avatarBg:"#d97706",spots:0,total:80},
+  {id:3,title:"Intro to Machine Learning",cat:"Workshop",date:"Feb 3, 2025",time:"2:00 PM",location:"Seminar Hall B",desc:"Hands-on workshop covering scikit-learn, data preprocessing, and building your first classification model. Laptops required.",presenter:"Dr. Priya Nair",role:"Asst. Professor, MCA",avatarBg:"#059669",spots:8,total:40},
+  {id:4,title:"Open Source Contribution Drive",cat:"Workshop",date:"Feb 10, 2025",time:"11:00 AM",location:"Computer Lab 1",desc:"Learn to contribute to real open source projects on GitHub. Get your first PR merged with mentorship from seniors.",presenter:"Keerthana Rajan",role:"Final Year, IT",avatarBg:"#7c3aed",spots:15,total:25},
+  {id:5,title:"Cloud & DevOps — AWS Edition",cat:"Seminar",date:"Feb 17, 2025",time:"3:00 PM",location:"Tech Talk Room",desc:"Industry speaker from AWS India walks through cloud architecture, CI/CD pipelines, and career paths in cloud engineering.",presenter:"Rahul Sharma",role:"Solutions Architect, AWS",avatarBg:"#0284c7",spots:22,total:60},
+  {id:6,title:"Competitive Programming Showdown",cat:"Competition",date:"Feb 22, 2025",time:"1:00 PM",location:"Lab 2, CS Block",desc:"3-hour rated contest on Codeforces. Problems range from 800 to 2000 difficulty. Individual entries only. Certificates for all finishers.",presenter:"Vishnu Krishnan",role:"ICPC Regionalist",avatarBg:"#e11d48",spots:34,total:50},
+  {id:7,title:"Cybersecurity & Ethical Hacking",cat:"Workshop",date:"Mar 1, 2025",time:"10:00 AM",location:"Lab 4, CS Block",desc:"CTF-style workshop covering web vulnerabilities, SQL injection, and XSS. Practice on a sandboxed environment safely.",presenter:"Mia Thomas",role:"Security Researcher",avatarBg:"#059669",spots:6,total:20},
+  {id:8,title:"AI & the Future of Work — Panel Talk",cat:"Talk",date:"Mar 8, 2025",time:"4:00 PM",location:"Main Auditorium",desc:"Three industry panelists discuss how AI is reshaping software engineering roles and what skills will matter in 5 years.",presenter:"Alumni Panel",role:"Various Industries",avatarBg:"#4f46e5",spots:45,total:120},
+  {id:9,title:"App Dev with Flutter",cat:"Bootcamp",date:"Mar 15, 2025",time:"9:30 AM",location:"Seminar Hall A",desc:"Two-day bootcamp building a cross-platform mobile app using Flutter and Firebase. No prior mobile experience needed.",presenter:"Sneha Mohan",role:"Final Year, CSE",avatarBg:"#d97706",spots:10,total:35},
+];
+
+let activeFilter = 'All';
+
+function toggleNav(){
+  const n=document.getElementById('mobileNav');
+  n.classList.toggle('open');
+}
+
+function setFilter(cat, el){
+  activeFilter=cat;
+  document.querySelectorAll('.pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  filterEvents();
+}
+
+function filterEvents(){
+  const q=document.getElementById('searchInput').value.toLowerCase().trim();
+  const filtered=events.filter(e=>{
+    const matchCat=activeFilter==='All'||e.cat===activeFilter;
+    const matchQ=!q||(e.title+e.desc+e.presenter+e.cat).toLowerCase().includes(q);
+    return matchCat&&matchQ;
+  });
+  render(filtered);
+}
+
+function initials(name){
+  return name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);
+}
+
+function render(list){
+  const grid=document.getElementById('eventsGrid');
+  const info=document.getElementById('resultsInfo');
+  info.innerHTML=`Showing <strong>${list.length}</strong> event${list.length!==1?'s':''}`+(activeFilter!=='All'?` in <strong>${activeFilter}</strong>`:'');
+  if(!list.length){
+    grid.innerHTML=`<div class="empty-state"><i class="ti ti-calendar-off" aria-hidden="true"></i><p>No events match your search. Try a different filter or keyword.</p></div>`;
+    return;
+  }
+  grid.innerHTML=list.map((e,i)=>{
+    const pct=e.total?Math.round((e.spots/e.total)*100):0;
+    const spotsLabel=e.spots===0?'Full':e.spots<=5?`${e.spots} spot${e.spots===1?'':'s'} left`:`${e.spots} spots`;
+    const btnClass=e.spots===0?'btn-register full':'btn-register';
+    const btnText=e.spots===0?'Full':'Register →';
+    return `
+    <article class="event-card" style="animation-delay:${i*0.06}s" role="article">
+      <div class="card-top">
+        <span class="cat-badge cat-${e.cat.toLowerCase()}">${e.cat}</span>
+        <span class="spots-left" aria-label="${spotsLabel} available">${spotsLabel}</span>
+      </div>
+      <div class="card-body">
+        <h2 class="event-title">${e.title}</h2>
+        <div class="event-meta">
+          <div class="meta-item"><i class="ti ti-calendar" aria-hidden="true"></i>${e.date}</div>
+          <div class="meta-item"><i class="ti ti-clock" aria-hidden="true"></i>${e.time}</div>
+          <div class="meta-item"><i class="ti ti-map-pin" aria-hidden="true"></i>${e.location}</div>
+        </div>
+        <p class="event-desc">${e.desc}</p>
+      </div>
+      <div class="card-footer">
+        <div class="presenter">
+          <div class="avatar" style="background:${e.avatarBg}" aria-hidden="true">${initials(e.presenter)}</div>
+          <div class="presenter-name">
+            <strong>${e.presenter}</strong>
+            ${e.role}
+          </div>
+        </div>
+        <button class="${btnClass}" aria-label="Register for ${e.title}" ${e.spots===0?'disabled':''}>${btnText}</button>
+      </div>
+    </article>`;
+  }).join('');
+}
+
+filterEvents();
+</script>
